@@ -1,0 +1,160 @@
+/*创建一个存储n个整数数据的单链表LinkList，n个结点值由键盘输入，该链表具有头结点，实现以下单链表的基本操作，并在main函数中测试。
+在链表第i个结点前插入结点。
+在链表中删除第i个结点。*/
+#pragma warning(disable:4996)
+#pragma warning(disable:4133)
+#include <stdio.h>
+#include <stdlib.h>
+typedef int ELemType;
+typedef struct
+{
+	ELemType data;
+	struct LNode* next;
+}LNode;//声明链表
+
+int printLink(LNode* L);
+
+//创建一个空的单链表LinkList，该链表具有头结
+LNode* intiLinklist()
+{
+	LNode* L = NULL;
+	L = (LNode*)malloc(sizeof(LNode));
+	if (L == NULL)
+	{
+		printf("内存分配失败！\n");
+	}
+	else
+	{
+		L->next = NULL;
+		printf("空链表创建成功！\n");
+	}
+	return L;
+}
+
+//在链表第i个结点前插入结点e
+LNode* insertLink(LNode* L, int i, ELemType e)
+{
+	LNode* p, * s;
+	int j = 0;
+	p = L;
+	if (i < 1)
+	{
+		printf("插入位置不合法\n");
+	}
+	else
+	{
+		while (p && j < i - 1)
+		{
+			p = p->next;
+			j++;
+		}
+		if (j > i - 1 || !p)
+		{
+			printf("插入位置不合法\n");
+		}
+		else
+		{
+			s = (LNode*)malloc(sizeof(LNode));
+			s->data = e;
+			s->next = p->next;
+			p->next = s;
+			printf("插入成功！\n");
+		}
+
+	}
+	return L;
+}
+
+//创建一个存储n个整数数据的单链表LinkList，n个结点值由键盘输入
+LNode* createLink(LNode* L)
+{
+	int i, n;
+	ELemType e;
+	printf("请输入您要创建的链表的元素个数：\n");
+	scanf("%d", &n);
+	printf("请输入链表的元素：\n");
+	for (i = 0;i < n;i++)
+	{
+		scanf("%d", &e);
+		L = insertLink(L, i + 1, e);
+	}
+	printLink(L);
+	return L;
+}
+
+//		在链表中删除第i个结点。
+LNode* deleteLink(LNode* L, int i)
+{
+	int j = 0;
+	LNode* p = L, * q;
+	if (p->next == NULL || i < 1)
+	{
+		printf("删除失败！\n");
+	}
+	else
+	{
+		while (p && j < i - 1)
+		{
+			p = p->next;
+			j++;
+		}
+		if (!p || j > i - 1)
+		{
+			printf("删除位置不合理！\n");
+		}
+		else //执行删除
+		{
+			q = p->next;//删去不需要的结点
+			p->next = q->next;//迈过去
+			free(q);
+			printf("删除成功！\n");
+			printLink(L);
+		}
+	}
+	return L;
+}
+
+//打印链表中的元素
+int printLink(LNode* L)
+{
+	//int j=0;
+	LNode* p = L;
+	if (p->next == NULL)
+	{
+		printf("该链表为空表！\n");
+
+	}
+	else
+	{
+		printf("该链表的元素为：\n");
+		while (p->next)
+		{
+			p = p->next;
+			printf("%d,", p->data);
+		}
+		printf("\n");
+	}
+	return 0;
+}
+
+int main()
+{
+	int i, e;
+	LNode* link = intiLinklist();
+
+	link = createLink(link);
+
+	printf("请输入您要插入的元素位置：\n");
+	scanf("%d", &i);
+	printf("请输入您要插入的元素：\n");
+	scanf("%d", &e);
+	link = insertLink(link, i, e);
+	printLink(link);
+
+	printf("请输入您要删除的元素位置：\n");
+	scanf("%d", &i);
+	link = deleteLink(link, i);
+
+	system("pause");
+	return 0;
+}
