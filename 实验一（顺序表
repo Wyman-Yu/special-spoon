@@ -1,0 +1,118 @@
+/*建立n个元素的顺序表SqList，n个元素由键盘输入，实现顺序表的基本操作,并在main函数中测试
+在SqList的第i个元素之前插入一个元素，实现顺序表插入的基本操作。
+在SqList中删除指定位置i上的元素，实现顺序表删除的操作*/
+#pragma warning(disable:4996)
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct
+{
+	int* elem;
+	int length;//顺序表的元素个数
+	int maxsize;//顺序表整体的空间大小
+}SqList;
+
+//建立n个元素的顺序表SqList，n个元素由键盘输入
+SqList creatSqlist()
+{
+	SqList L;
+	int n, i;
+	L.elem = (int*)malloc(sizeof(int));
+	if (L.elem == NULL)
+	{
+		printf("内存分配失败！\n");
+	}
+	else
+	{
+		L.length = 0;
+		L.maxsize = 100;
+		printf("空的顺序表建立成功！\n");
+
+		printf("请您输入顺序表的元素个数：\n");
+		scanf("%d", &n);
+		printf("请您输入顺序表的元素：\n");
+		for (i = 0;i <= n - 1;i++)
+		{
+			scanf("%d", &L.elem[i]);
+			L.length++;
+		}
+		printf("您输入顺序表的元素为：\n");
+		for (i = 0;i <= n - 1;i++)
+		{
+			printf("%d,", L.elem[i]);
+		}
+	}
+	return L;
+}
+
+// 在SqList的第i个元素之前插入一个元素e，实现顺序表插入的基本操作。
+
+SqList insertSqlist(SqList L, int i, int e)
+{
+	int j;
+	if (i<1 || i>	L.length + 1)
+	{
+		printf("插入位置不合法！\n");
+	}
+	else
+	{
+		for (j = L.length - 1;j >= i - 1;j--)
+		{
+			L.elem[j + 1] = L.elem[j];
+		}
+		L.elem[i - 1] = e;
+		L.length++;
+		printf("\n插入成功！您插入元素后的顺序表为：\n");
+		for (i = 0;i <= L.length - 1;i++)
+		{
+			printf("%d,", L.elem[i]);
+		}
+	}
+	return L;
+}
+
+
+// 在SqList中删除指定位置i上的元素，实现顺序表删除的操作。
+SqList deleteSqlist(SqList L, int i)
+{
+	int j;
+	if (i<1 || i>L.length)
+	{
+		printf("删除位置不合法！\n");
+	}
+	else
+	{
+		int e = L.elem[i - 1];
+		for (j = i;j <= L.length - 1;j++)
+		{
+			L.elem[j - 1] = L.elem[j];
+		}
+		L.length--;
+		printf("\n删除成功！您删除元素%d后的顺序表为：\n", e);
+		for (i = 0;i <= L.length - 1;i++)
+		{
+			printf("%d,", L.elem[i]);
+		}
+
+	}
+
+	return L;
+}
+
+int main()
+{
+	int i, e;
+	SqList Sq = creatSqlist();
+
+	printf("\n请您输入要插入元素的位置：\n");
+	scanf("%d", &i);
+	printf("请您输入要插入元素：\n");
+	scanf("%d", &e);
+	Sq = insertSqlist(Sq, i, e);
+
+	printf("\n请您输入要删除元素的位置：\n");
+	scanf("%d", &i);
+	Sq = deleteSqlist(Sq, i);
+	system("pause");
+	return 0;
+}
