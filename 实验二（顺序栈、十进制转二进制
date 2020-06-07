@@ -1,0 +1,151 @@
+//利用栈的基本操作实现一个判断字符串中括号是否正确配对的程序。
+//	具体完成如下：
+//	1.	定义栈的顺序存取结构。
+//	2.	定义顺序栈的基本操作（初始化栈、判栈空否、入栈、出栈）。
+//
+//  3.实现十进制转化为二进制算法的实现。
+//	4.主函数完成十进制转化为二进制算法的调用，实现对给定的十进制数输出转化的二进制结果。
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#define  MAXSIZE  100
+typedef int SElemType;
+//	1.	定义栈的顺序存取结构。
+typedef struct
+{
+	SElemType* base;
+	SElemType* top;
+	int stacksize;
+}SqStack;
+//	2.	定义顺序栈的基本操作（初始化栈、判栈空否、入栈、出栈）。
+//初始化栈
+SqStack initSqStack()
+{
+	SqStack S;
+	S.base = (SElemType*)malloc(sizeof(SElemType));
+	if (S.base == NULL)
+	{
+		printf("顺序栈初始化失败！\n");
+	}
+	else
+	{
+		S.top = S.base;
+		S.stacksize = MAXSIZE;
+		printf("顺序栈初始化成功！\n");
+	}
+	return S;
+}
+//判栈空否
+int StackEmpty(SqStack S)
+{
+	if (S.top == S.base)
+	{
+		//printf("该顺序栈为空！\n");
+		return 1;
+	}
+	else
+	{
+		//printf("该顺序栈不为空！\n");
+		return 0;
+	}
+
+}
+//入栈:在栈顶插入一个元素
+SqStack Push(SqStack S, SElemType e)
+{
+	if ((S.top - S.base) == S.stacksize)//栈满
+	{
+		printf("栈满，无法入栈！\n");
+	}
+	else
+	{
+		*S.top = e;
+		S.top++;
+		//printf("元素%d已入栈！\n",e);
+	}
+	return S;
+}
+
+//出栈：删除栈顶元素
+SqStack Pop(SqStack	S)
+{
+	SElemType e;
+	S.top--;
+	e = *S.top;
+	printf("%d", e);
+	return S;
+}
+//获取栈顶元素
+SElemType getTop(SqStack S)
+{
+	SElemType e;
+	e = *(S.top - 1);
+	printf("%d", e);
+	return e;
+}
+int printStack(SqStack S)
+{
+	SElemType* p = S.base;
+	if (S.top != S.base)
+	{
+		printf("栈中元素为：");
+
+		while (p != S.top)
+		{
+			printf("%d,", *p);
+			p++;
+		}
+		printf(("\n"));
+
+	}
+	else printf("空栈！\n");
+	return 0;
+}
+
+//3.实现十进制转化为二进制算法的实现。
+int  Conversion(int N)
+{
+
+	SqStack S;
+	S = initSqStack();
+	printf("十进制数%d转化为二进制为：", N);
+	while (N != 0)
+	{
+		S = Push(S, N % 2);
+		N = N / 2;
+	}
+
+	while (StackEmpty(S) != 1)
+	{
+		S = Pop(S);
+	}
+
+	return 0;
+}
+
+int main()
+{
+	int N;
+	/*SElemType topElem;
+	SqStack S = initSqStack();
+	StackEmpty(S);
+	S=Push(S,23);
+	S=Push(S,565);
+	S=Push(S,789);
+	printStack(S);
+	topElem=getTop(S);
+	S = Pop(S);
+
+	topElem=getTop(S);
+	printStack(S);*/
+
+
+	//	4.主函数完成十进制转化为二进制算法的调用，实现对给定的十进制数输出转化的二进制结果。
+	printf("请输入您想要转化的十进制数:\n");
+	scanf_s("%d", &N);
+	Conversion(N);
+
+	system("pause");
+	return 0;
+}
